@@ -14,6 +14,7 @@ const feedSchema = new mongoose.Schema({
     unique: true, // Don't allow duplicate feed URLs
   },
   // Automatically adds 'createdAt' and 'updatedAt' fields
+  favicon: { type: String },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Feed', feedSchema);

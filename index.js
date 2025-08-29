@@ -58,28 +58,44 @@ app.post('/api/feeds', async (req, res) => {
   }
 
   try {
-    // 1. Check if the feed is a valid RSS feed by trying to parse it
     const feedData = await parser.parseURL(url);
 
-    // 2. If it's valid, create a new Feed document
+    // ✅ NEW: Logic to get the favicon
+    const domain = new URL(feedData.link || url).hostname;
+    const favicon = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+
     const newFeed = new Feed({
       title: feedData.title,
-      url: url, // Use the original URL provided by the user
+      url: url,
+      favicon: favicon, // ✅ Save the favicon URL
     });
 
-    // 3. Save it to the database
     const savedFeed = await newFeed.save();
     res.status(201).json(savedFeed);
-
   } catch (error) {
-    // Handle potential errors: duplicate URL or invalid feed
-    if (error.code === 11000) { // MongoDB duplicate key error
+    // ... error handling is unchanged
+    if (error.code === 11000) {
       return res.status(409).json({ error: 'This feed URL has already been added.' });
     }
     res.status(400).json({ error: 'Invalid or unreachable RSS feed URL.' });
   }
 });
 
+app.delete('/api/feeds/:id', async (req, res) => {
+  try {
+    const { id } = req.params; // Get the ID from the URL parameter
+    const deletedFeed = await Feed.findByIdAndDelete(id);
+    
+    if (!deletedFeed) {
+      return res.status(404).json({ error: 'Feed not found.' });
+    }
+    
+    res.json({ message: 'Feed deleted successfully.' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete feed.' });
+  }
+});
+// --- Start the Server ---
 const PORT = 4000;
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
