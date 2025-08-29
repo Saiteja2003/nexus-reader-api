@@ -96,7 +96,7 @@ app.delete('/api/feeds/:id', async (req, res) => {
   }
 });
 // --- Start the Server ---
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
 });
