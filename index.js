@@ -14,10 +14,11 @@ const Feed = require("./models/Feed");
 const app = express();
 const parser = new Parser();
 
+const authRoutes = require("./routes/auth");
 // Middleware
 app.use(cors());
 app.use(express.json()); // Middleware to parse JSON request bodies
-
+app.use("/api/auth", authRoutes);
 // --- Database Connection ---
 mongoose
   .connect(process.env.MONGO_URI)
