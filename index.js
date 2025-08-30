@@ -17,20 +17,21 @@ const parser = new Parser();
 const authRoutes = require("./routes/auth");
 // Middleware
 const allowedOrigins = [
-  "https://nexus-reader-client-livid.vercel.app",
+  "https://nexus-reader-client-pi.vercel.app",
   "http://localhost:5173", // Also allow your local dev environment
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg =
-        "The CORS policy for this site does not allow access from the specified Origin.";
-      return callback(new Error(msg), false);
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(
+        new Error(
+          "The CORS policy for this site does not allow access from the specified Origin."
+        )
+      );
     }
-    return callback(null, true);
   },
 };
 
