@@ -10,7 +10,8 @@ const Parser = require("rss-parser");
 
 // Import the Feed model
 const Feed = require("./models/Feed");
-
+const authRoutes = require("./routes/auth");
+const feedRoutes = require("./routes/feeds");
 const app = express();
 const parser = new Parser();
 
@@ -18,7 +19,8 @@ const authRoutes = require("./routes/auth");
 // Middleware
 const allowedOrigins = [
   "https://nexus-reader-client-pi.vercel.app",
-  "http://localhost:5173", // Also allow your local dev environment
+  "http://localhost:5173",
+  "https://nexusreader.org", // Also allow your local dev environment
 ];
 
 const corsOptions = {
@@ -44,7 +46,8 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected successfully."))
   .catch((err) => console.error("MongoDB connection error:", err));
-
+app.use("/api/auth", authRoutes);
+app.use("/api/feeds", feedRoutes);
 // --- API Endpoints ---
 
 // Original endpoint for fetching articles from a specific URL (still useful)

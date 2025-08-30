@@ -16,7 +16,13 @@ const feedSchema = new mongoose.Schema(
     },
     // Automatically adds 'createdAt' and 'updatedAt' fields
     favicon: { type: String },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // This tells Mongoose the 'user' field corresponds to a User model
+      required: true,
+    },
   },
+
   { timestamps: true }
 );
 
