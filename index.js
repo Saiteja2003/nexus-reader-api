@@ -19,7 +19,8 @@ const parser = new Parser();
 const allowedOrigins = [
   "https://nexus-reader-client-pi.vercel.app",
   "http://localhost:5173",
-  "https://nexusreader.org", // Also allow your local dev environment
+  "https://nexusreader.org",
+  "https://www.nexusreader.org", // Also allow your local dev environment
 ];
 
 const corsOptions = {
