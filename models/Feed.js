@@ -12,7 +12,6 @@ const feedSchema = new mongoose.Schema(
     url: {
       type: String,
       required: true,
-      unique: true, // Don't allow duplicate feed URLs
     },
     // Automatically adds 'createdAt' and 'updatedAt' fields
     favicon: { type: String },
@@ -25,5 +24,6 @@ const feedSchema = new mongoose.Schema(
 
   { timestamps: true }
 );
-
+// It ensures that the combination of a 'user' and a 'url' is unique.
+feedSchema.index({ user: 1, url: 1 }, { unique: true });
 module.exports = mongoose.model("Feed", feedSchema);

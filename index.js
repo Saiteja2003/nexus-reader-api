@@ -15,7 +15,6 @@ const feedRoutes = require("./routes/feeds");
 const app = express();
 const parser = new Parser();
 
-const authRoutes = require("./routes/auth");
 // Middleware
 const allowedOrigins = [
   "https://nexus-reader-client-pi.vercel.app",
