@@ -75,32 +75,11 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 
 router.get("/articles/all", authMiddleware, async (req, res) => {
   try {
-    // 1. Find all feeds that belong to the current user
-    const userFeeds = await Feed.find({ user: req.user.userId });
-    if (!userFeeds.length) {
-      return res.json([]); // Return an empty array if they have no feeds
-    }
-
-    // 2. Fetch articles from all feed URLs in parallel for speed
-    const articlePromises = userFeeds.map((feed) => parser.parseURL(feed.url));
-    const feedResults = await Promise.allSettled(articlePromises); // Use allSettled to prevent one bad feed from failing the whole request
-
-    // 3. Combine all articles into one big array and add the source feed's title
-    const allArticles = feedResults
-      .filter((result) => result.status === "fulfilled") // Only use successfully fetched feeds
-      .flatMap((result) => {
-        // Add the feed's title to each article for display purposes
-        const feedTitle = result.value.title;
-        return result.value.items.map((item) => ({ ...item, feedTitle }));
-      });
-
-    // 4. Sort the final combined array by publication date, newest first
-    allArticles.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-
-    res.json(allArticles);
+    const userFeeds = await Feed.find({ user: req.user.userId }).lean(); // .lean() is a performance optimization
+    res.json(userFeeds); // Just send the list of feeds
   } catch (error) {
-    console.error("Failed to fetch all articles:", error);
-    res.status(500).json({ error: "Failed to retrieve all articles." });
+    console.error("Failed to fetch user's feed list:", error);
+    res.status(500).json({ error: "Failed to retrieve feed list." });
   }
 });
 

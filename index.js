@@ -15,7 +15,7 @@ const feedRoutes = require("./routes/feeds");
 const app = express();
 const parser = new Parser();
 const curatedRoutes = require("./routes/curated");
-
+const articleRoutes = require("./routes/articles");
 // Middleware
 const allowedOrigins = [
   "https://nexus-reader-client-pi.vercel.app",
@@ -43,6 +43,7 @@ app.use(cors(corsOptions));
 app.use(express.json()); // Middleware to parse JSON request bodies
 app.use("/api/auth", authRoutes);
 app.use("/api/curated", curatedRoutes); // Use the new routes
+app.use("/api/articles", articleRoutes);
 // --- Database Connection ---
 mongoose
   .connect(process.env.MONGO_URI)
