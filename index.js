@@ -14,6 +14,7 @@ const authRoutes = require("./routes/auth");
 const feedRoutes = require("./routes/feeds");
 const app = express();
 const parser = new Parser();
+const curatedRoutes = require("./routes/curated");
 
 // Middleware
 const allowedOrigins = [
@@ -41,6 +42,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json()); // Middleware to parse JSON request bodies
 app.use("/api/auth", authRoutes);
+app.use("/api/curated", curatedRoutes); // Use the new routes
 // --- Database Connection ---
 mongoose
   .connect(process.env.MONGO_URI)
