@@ -22,7 +22,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://nexusreader.org",
   "https://www.nexusreader.org",
-  "https://nexus-reader-client-git-authcontext-archetechglobals-projects.vercel.app", // Also allow your local dev environment
+  /https:\/\/nexus-reader-client.*\.vercel\.app$/, // Also allow your local dev environment
 ];
 
 const corsOptions = {
