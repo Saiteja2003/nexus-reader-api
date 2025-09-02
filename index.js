@@ -21,7 +21,8 @@ const allowedOrigins = [
   "https://nexus-reader-client-pi.vercel.app",
   "http://localhost:5173",
   "https://nexusreader.org",
-  "https://www.nexusreader.org", // Also allow your local dev environment
+  "https://www.nexusreader.org",
+  "https://nexus-reader-client-git-authcontext-archetechglobals-projects.vercel.app", // Also allow your local dev environment
 ];
 
 const corsOptions = {
@@ -65,12 +66,10 @@ app.get("/api/fetch-articles", async (req, res) => {
   } catch (error) {
     console.error(`Failed to parse feed at URL: ${url}`, error);
     // Send a specific error response for this single failed request
-    res
-      .status(500)
-      .json({
-        error:
-          "Failed to fetch or parse the RSS feed. The source may be invalid or temporarily down.",
-      });
+    res.status(500).json({
+      error:
+        "Failed to fetch or parse the RSS feed. The source may be invalid or temporarily down.",
+    });
   }
 });
 
