@@ -14,7 +14,16 @@ const curatedFeedSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ["Tech", "Global News", "Sports", "Design"], // Defines the allowed categories
+    enum: [
+      "Tech",
+      "World News",
+      "Business",
+      "Politics",
+      "Science",
+      "Health",
+      "Sports",
+      "Entertainment",
+    ], // Defines the allowed categories
   },
 });
 
