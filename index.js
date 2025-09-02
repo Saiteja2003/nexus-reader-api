@@ -63,7 +63,14 @@ app.get("/api/fetch-articles", async (req, res) => {
     const feed = await parser.parseURL(url);
     res.json(feed);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch or parse the RSS feed." });
+    console.error(`Failed to parse feed at URL: ${url}`, error);
+    // Send a specific error response for this single failed request
+    res
+      .status(500)
+      .json({
+        error:
+          "Failed to fetch or parse the RSS feed. The source may be invalid or temporarily down.",
+      });
   }
 });
 
